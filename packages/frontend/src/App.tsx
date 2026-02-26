@@ -1,6 +1,7 @@
 import * as s from 'solid-js'
 import * as theme from '@solid-devtools/shared/theme'
 import * as ui from './ui/index.ts'
+import {useAppCtx} from './controller.tsx'
 import {createSidePanel} from './SidePanel.tsx'
 import {StructureView} from './structure.tsx'
 
@@ -111,12 +112,36 @@ const Options: s.Component = () => {
                         <ui.icon.Heart class='w-3 h-3 mb-px text-pink-500 dark:text-pink-400' />
                         Support the project
                     </a>
+                    <hr class='b-panel-3' />
+                    <UnnamedSignalsSelect />
                 </div>
             </div>
         </details>
     )
 }
 
+
+const UnnamedSignalsSelect: s.Component = () => {
+    const ctx = useAppCtx()
+    return (
+        <label
+            role='menuitem'
+            class='
+                flex items-center justify-between gap-2 p-1 rounded-md outline-none
+                text-text transition-colors hover:bg-panel-3 focus-within:bg-panel-3'>
+            <span>Unnamed signals</span>
+            <select
+                class='bg-panel-2 b b-solid b-panel-4 rounded px-1 py-0.5 text-text outline-none cursor-pointer'
+                value={ctx.unnamedSignalsDisplay()}
+                onChange={e => ctx.setUnnamedSignalsDisplay(e.currentTarget.value as any)}
+            >
+                <option value='shown'>Shown</option>
+                <option value='faded'>Faded</option>
+                <option value='hidden'>Hidden</option>
+            </select>
+        </label>
+    )
+}
 
 // const MainViewTabs: Component = () => {
 //   const { view } = useController()

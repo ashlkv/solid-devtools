@@ -414,7 +414,9 @@ export function InspectorView(): s.JSX.Element {
             stores:        [] as Inspector.Signal[],
             memos:         [] as Inspector.Signal[],
         }
+        const display = ctx.unnamedSignalsDisplay()
         for (let signal of Object.values(ctx.inspector.state.signals)) {
+            if (!signal.name && display === 'hidden') continue
             switch (signal.type) {
             case debug.NodeType.CustomValue: r.custom_values.push(signal) ;break
             case debug.NodeType.Signal:      r.signals.push(signal)       ;break
@@ -424,6 +426,10 @@ export function InspectorView(): s.JSX.Element {
         }
         return r
     })
+
+    const isSignalFaded = (signal: Inspector.Signal): boolean => {
+        return !signal.name && ctx.unnamedSignalsDisplay() === 'faded'
+    }
 
     return (
         <ui.Scrollable>
@@ -468,6 +474,7 @@ export function InspectorView(): s.JSX.Element {
                             actions        = {[
                                 getValueActionInspect(sig.item),
                             ]}
+                            class          = {isSignalFaded(sig) ? 'opacity-45' : ''}
                         />
                     )}
                     </s.For>
@@ -486,6 +493,7 @@ export function InspectorView(): s.JSX.Element {
                             actions        = {[
                                 getValueActionInspect(store.item),
                             ]}
+                            class          = {isSignalFaded(store) ? 'opacity-45' : ''}
                         />
                     )}
                     </s.For>
@@ -507,6 +515,7 @@ export function InspectorView(): s.JSX.Element {
                                 getValueActionInspect(signal.item),
                                 getValueActionGraph(signal),
                             ]}
+                            class          = {isSignalFaded(signal) ? 'opacity-45' : ''}
                         />
                     )}
                     </s.For>
@@ -527,6 +536,7 @@ export function InspectorView(): s.JSX.Element {
                                 getValueActionInspect(memo.item),
                                 getValueActionGraph(memo),
                             ]}
+                            class          = {isSignalFaded(memo) ? 'opacity-45' : ''}
                         />
                     )}
                     </s.For>

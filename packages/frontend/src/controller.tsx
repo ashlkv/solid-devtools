@@ -148,6 +148,12 @@ function createAppCtx(props: DevtoolsOptions) {
     }
 
     //
+    // UNNAMED SIGNALS DISPLAY
+    //
+    type UnnamedSignalsDisplay = 'shown' | 'faded' | 'hidden'
+    const [unnamedSignalsDisplay, setUnnamedSignalsDisplay] = s.createSignal<UnnamedSignalsDisplay>('faded')
+
+    //
     // LOCATOR
     //
     const [devtoolsLocatorEnabled, setDevtoolsLocatorState] = s.createSignal(false)
@@ -268,6 +274,8 @@ function createAppCtx(props: DevtoolsOptions) {
     })
 
     return {
+        unnamedSignalsDisplay,
+        setUnnamedSignalsDisplay,
         locator: {
             locatorEnabled,
             setLocatorState: setDevtoolsLocatorState,
